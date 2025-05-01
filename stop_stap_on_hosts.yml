@@ -1,0 +1,8 @@
+---
+# This playbook creates Guardium datasources based off a JSON array in a text file
+- name: Stop Guardium on server
+  hosts: redhat_databases
+  tasks:
+  - include: tasks/stop_stap.yml
+
+      

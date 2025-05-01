@@ -1,0 +1,110 @@
+---
+# This playbook checks if a given stap_host is active
+- name: Get a list of inactive STAPs using REST API and optionally restart them if needed 
+  hosts: 127.0.0.1
+  vars_files:
+    - group_vars/vars.yml 
+  vars:
+    active_staps_list: [] 
+    inactive_staps_list: [] 
+    all_staps_list: [] 
+    inactive_stap_host_list: []
+  connection: local
+  tasks:
+  - include: tasks/oauth_token.yml
+    tags: always
+  - name: Get the list of active STAPs on server
+    tags: always
+    ansible.builtin.uri:
+      url: '{{ guard_url}}/restAPI/stap'
+      method: GET 
+      status_code: 200
+      body_format: json
+      return_content: yes
+      validate_certs: false
+      headers:
+        Content-Type: application/json
+        Authorization: "Bearer {{ access_token }}"
+    register: response
+
+  - name: Set the list of Active STAPs
+    tags: always
+    set_fact:
+      active_staps : "{{ response.content | from_json }}"
+
+  - name: Set list of just stap hosts (active)
+    tags: always
+    set_fact: 
+       active_staps_list: "{{  active_staps_list + [item['stap_host']] }}"
+    loop: '{{ active_staps }}'
+
+
+  - name: Get the list of all STAPs on server
+    tags: always
+    ansible.builtin.uri:
+      url: '{{ guard_url}}/restAPI/stap?onlyActive=0'
+      method: GET
+      status_code: 200
+      body_format: json
+      return_content: yes
+      validate_certs: false
+      headers:
+        Content-Type: application/json
+        Authorization: "Bearer {{ access_token }}"
+    register: response
+
+  - name: Set the list of Active STAPs
+    tags: always
+    set_fact:
+      all_staps : "{{ response.content | from_json }}"
+
+  - name: Set list of just stap hosts without IDS
+    tags: always
+    set_fact:
+       all_staps_list: "{{  all_staps_list + [item['stap_host']] }}"
+    loop: '{{ all_staps }}'
+
+
+  - name: Set list of inactive stap hosts
+    tags: always
+    set_fact:
+       inactive_staps_list: "{{  all_staps_list | difference(active_staps_list) }}"
+
+  - name: Create a list of target hosts for next play (start staps)
+    tags: always
+    set_fact:
+      inactive_stap_host_list_temp: "{{ inactive_staps_list | join(':') }}" 
+
+  - name: Trim the list if empty so that it is does not have spaces
+    tags: always
+    set_fact:
+      inactive_stap_host_list: '{{ inactive_stap_host_list_temp | regex_replace("\s","") }}'
+
+
+  - name: list of active staps
+    tags: print
+    debug:
+      msg: "{{ active_staps_list }}"
+
+  - name: List of all staps
+    tags: print
+    debug:
+      msg: "{{ all_staps_list }}"
+
+
+  - name: List of inactive staps
+    tags: print
+    debug:
+      msg: "{{ inactive_staps_list }}"
+
+  - name: List of target hosts for next play (start STAPs)
+    tags: print
+    debug:
+      msg: '{{ inactive_stap_host_list | regex_replace("\s","") }}'
+
+- name: Start STAPS on the list of database hosts that have inactive STAPs (works for systemd)
+  hosts: "{{ hostvars['127.0.0.1']['inactive_stap_host_list'] | default('127.0.0.1',true) }}"
+  tags: start_stopped_staps
+  tasks:
+    - include: tasks/start_stap.yml
+      when: hostvars['127.0.0.1']['inactive_stap_host_list'] | length > 0

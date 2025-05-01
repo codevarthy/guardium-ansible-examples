@@ -1,0 +1,8 @@
+---
+# This playbook makes sure that guard_upguard is running on specified database hosts
+  - name: Start guard_upguard
+    ansible.builtin.service:
+      name: guard_upguard
+      state: started
+
+      

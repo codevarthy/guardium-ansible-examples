@@ -1,0 +1,7 @@
+---
+  - name: Stop STAP on Database server
+    ansible.builtin.service:
+      name: guard_upguard
+      state: stopped
+
+      

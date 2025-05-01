@@ -1,8 +1,0 @@
-oauth_url: "https://myguardium_appliance:8443/oauth/token"
-guard_url:  "https://myguardium_appliance:8443"
-client_id: "myclient"
-client_secret: "mysecret"
-grant_type: "password"
-username: "myuser"
-password: "mypass"
-json_file_path: "datasources.json"  # Update with the actual path to your JSON file

@@ -1,0 +1,19 @@
+---
+# This task requests a Guardium REST API access token
+  - name: Fetch access token
+    uri:
+      url: "{{ oauth_url }}"
+      method: POST
+      body_format: form-urlencoded
+      body:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        grant_type: "{{ grant_type }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+      validate_certs: no
+    register: auth_response
+  - name: Set access token
+    set_fact:
+      access_token: "{{ auth_response.json.access_token }}" 
+
