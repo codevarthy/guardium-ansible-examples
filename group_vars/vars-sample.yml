@@ -1,0 +1,9 @@
+oauth_url: "https://myguardium:8443/oauth/token"
+guard_url:  "https://myguardium:8443"
+client_id: "mysampleclient1"
+client_secret: "mysupersecret"
+grant_type: "password"
+username: "myuser"
+password: "mypassword"
+json_file_path: "datasources.json"  # Update with the actual path to your CSV file
+
