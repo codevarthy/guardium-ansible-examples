@@ -1,0 +1,39 @@
+---
+# This playbook creates Guardium datasources based off a JSON array in a text file
+- name: Create Guardium Datasources
+  hosts: 127.0.0.1
+  vars_files:
+    - group_vars/vars.yml 
+  vars:
+    default_tags:
+      - create
+    runtime_tags: "{{ ansible_run_tags | default([]) }}"
+    combined_tags: "{{ default_tags + runtime_tags }}"
+  connection: local
+
+  tasks:
+  - name: Check if any tags were provided
+    fail:
+        msg: "No tags were provided. Please run the playbook with the '--tags <your_tag>' option. Valid tags are create, test, delete, always"
+    when: ansible_run_tags | length == 1
+  - include: tasks/oauth_token.yml
+    tags: always
+
+  - name: Print the response
+    tags: print
+    debug:
+      msg: "Response: {{ access_token }}" 
+
+  - name: Creating list of datasources
+    tags: always 
+    ansible.builtin.set_fact:
+      datasource_list: "{{ lookup('ansible.builtin.file',  json_file_path ) | from_json }}"
+
+  - include_tasks: 
+      file: tasks/datasource.yml
+    vars:
+       datasource_details: '{{item}}'
+    loop_control:
+        label: "Processing {{ item.name }}"
+    loop: "{{ datasource_list }}"
+    tags: always

@@ -1,0 +1,26 @@
+[
+{
+  "type": "DB2",
+  "name": "chicken14DB2",
+  "password": "guardium",
+  "user": "db2inst1",
+  "dbName": "dn0chick",
+  "application": "Classifier",
+  "shared": "true",
+  "port": "50000",
+  "host": "chicken.guardium.com",
+  "serviceName": "sample"
+},
+{
+  "type": "DB2",
+  "name": "chicken15DB2",
+  "password": "guardium",
+  "user": "db2inst1",
+  "dbName": "dn0chick",
+  "application": "Classifier",
+  "shared": "true",
+  "port": "50000",
+  "host": "chicken.guardium.com",
+  "serviceName": "sample"
+}
+]

@@ -1,0 +1,71 @@
+---
+# This playbook creates a Guardium datasource and tests the connection
+- name: Create a Guardium datasource 
+  tags: create
+  ansible.builtin.uri:
+      url: https://guard:8443/restAPI/datasource
+      method: POST
+      body: "{{ datasource_details }}"
+      status_code: 200
+      body_format: json
+      return_content: yes
+      validate_certs: false
+      headers:
+        Content-Type: application/json
+        Authorization: "Bearer {{ access_token }}"
+  register: response
+
+- name: Check for ErrorCode in JSON response (specific format)
+  tags: create
+  when:
+      - response.status == 200
+      - response.json.ErrorCode is defined
+  debug:
+        msg: "Operation errored. ErrorCode: {{ response.json.ErrorCode }}, ErrorMessage: {{ response.json.ErrorMessage | default('No ErrorMessage provided') }}"
+
+ 
+- name: Print the response code
+  tags: create
+  debug:
+    msg: " {{ response.content | from_json }}"
+  when: response.json.ErrorCode is not defined
+- name: Test Guardium datasource
+  tags: test
+  ansible.builtin.uri:
+      url: https://guard:8443/restAPI/test_connection
+      method: POST
+      body:
+        name: "{{ datasource_details.name }}"
+      status_code: 200
+      body_format: json
+      return_content: yes
+      validate_certs: false
+      headers:
+        Content-Type: application/json
+        Authorization: "Bearer {{ access_token }}"
+  register: response
+- name: Print the response
+  tags: test
+  debug:
+    msg: "Response: {{ response.content | from_json }}"
+
+- name: Delete the datasource
+  tags: delete
+  ansible.builtin.uri:
+      url: https://guard:8443/restAPI/datasource
+      method: DELETE
+      body:
+        name: "{{ datasource_details.name }}"
+      status_code: 200
+      body_format: json
+      return_content: yes
+      validate_certs: false
+      headers:
+        Content-Type: application/json
+        Authorization: "Bearer {{ access_token }}"
+  register: response
+
+- name: Print the response
+  tags: delete
+  debug:
+    msg: "Response: {{ response.content | from_json }}"
