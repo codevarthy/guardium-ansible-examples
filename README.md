@@ -65,7 +65,7 @@ Bulk test datasource connections for datasources listed in datasource file defin
 ```
  Bulk delete datasources listed in datasource file defined in vars.yml - for example datasource.json
 ```   
-     ansible-playbook --tags=test  bulk-createdatasource.yml
+     ansible-playbook --tags=delete  bulk-createdatasource.yml
 ```   
 
 ## Upgrade STAP bundle etc
