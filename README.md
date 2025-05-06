@@ -22,7 +22,7 @@ Using Guardium API - https://www.ibm.com/docs/en/gdp/12.x?topic=commands-using-g
    ```
   db2.mydemo.com ansible_host=10.100.1.7 ansible_ssh_user=root ansible_ssh_pass= guard_config_path=/usr/local/guardium/modules/STAP/current/guard-config-update
   db1.mydemo.com ansible_host=10.100.1.6 ansible_ssh_user=root ansible_ssh_pass=   guard_config_path=/usr/local/guardium/modules/STAP/current/guard-config-update
- ```
+  ```
 
 
 ## STAP scripts 
