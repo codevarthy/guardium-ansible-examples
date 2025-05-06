@@ -1,0 +1,31 @@
+---
+# This playbook restarts STAP on a host using Guardium API
+- name: Create Guardium Datasources
+  hosts: 127.0.0.1
+  vars_files:
+    - group_vars/vars.yml 
+  connection: local
+  tasks:
+  - include: tasks/oauth_token.yml
+  - name: Print the response
+    debug:
+      msg: "Response: {{ access_token }}" 
+  - name: Test Guardium datasource
+    ansible.builtin.uri:
+      url: https://guard:8443/restAPI/stap
+      method: PUT
+      body:
+        restartMode: 0
+        stapHost: '{{ stap_host }}'
+      status_code: 200
+      body_format: json
+      return_content: yes
+      validate_certs: false
+      headers:
+        Content-Type: application/json
+        Authorization: "Bearer {{ access_token }}"
+    register: response
+  - name: Print the response
+    debug:
+      msg: "Response: {{ response.content  }}"
+

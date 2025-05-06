@@ -1,0 +1,56 @@
+---
+# This playbook upgrades the bundle on specific client
+- name: Assign Bundle to Client
+  hosts: 127.0.0.1 
+  vars_files:
+    - group_vars/vars.yml 
+  vars:
+    client_ip: db1.mydemo.com
+    module_name: BUNDLE-STAP
+    module_version: 12.0.4.0_r118475_1
+  connection: local
+  tasks:
+  - include: tasks/oauth_token.yml
+  - name: Print the response
+    debug:
+      msg: "Response: {{ access_token }}" 
+  - name: Assign Bundle
+    ansible.builtin.uri:
+      url: https://guard:8443/restAPI/gim_client_assign
+      method: PUT
+      body:
+        clientIP : '{{ client_ip }}'
+        module: '{{ module_name }}'
+        moduleVersion: '{{ module_version }}'
+      status_code: 200
+      body_format: json
+      return_content: yes
+      validate_certs: false
+      headers:
+        Content-Type: application/json
+        Authorization: "Bearer {{ access_token }}"
+    register: response
+  - name: Print the response
+    debug:
+      msg: "Response: {{ response.content  }}"
+
+
+  - name: Schedule Install
+    ansible.builtin.uri:
+      url: https://guard:8443/restAPI/gim_schedule_install
+      method: PUT
+      body:
+        clientIP : '{{ client_ip }}'
+        module: '{{ module_name }}'
+        date: 'now'
+      status_code: 200
+      body_format: json
+      return_content: yes
+      validate_certs: false
+      headers:
+        Content-Type: application/json
+        Authorization: "Bearer {{ access_token }}"
+    register: response
+  - name: Print the response
+    debug:
+      msg: "Response: {{ response.content  }}"

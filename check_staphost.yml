@@ -1,0 +1,34 @@
+---
+# This playbook checks the status of Guardium services on host
+- name: Check Guardium services on database host
+  hosts: db1.mydemo.com
+  tasks:
+  - name: Populate service facts
+    ansible.builtin.service_facts:
+
+  - name: Print service facts for guard_gim
+    ansible.builtin.debug:
+      var: ansible_facts['services']['guard_gim.service']
+
+  - name: Print service facts for guard_gsvr
+    ansible.builtin.debug:
+      var: ansible_facts['services']['guard_gsvr.service']
+
+  - name: Print service facts for guard_upguard
+    ansible.builtin.debug:
+      var: ansible_facts['services']['guard_upguard.service']
+
+  - name: Getting process IDs of STAP process
+    shell: pidof guard_stap
+    register: pids_of_stap
+
+  - name: Print pid of stap
+    debug: msg="{{ pids_of_stap }}"
+      
+
+  - name: Getting guard_config status
+    shell: "{{ guard_config_path }}  --status"
+    register: config_of_stap
+
+  - name: Print guard_config status
+    debug: msg="{{ config_of_stap.stdout.split('\n') }}"
