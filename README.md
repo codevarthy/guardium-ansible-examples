@@ -74,7 +74,7 @@ gim_assign_bundle_or_module_to_client_by_version  - https://www.ibm.com/docs/en/
 
 gim_schedule_install - https://www.ibm.com/docs/en/gdp/12.x?topic=reference-gim-schedule-install
 
-Assign bundle and schedule install. Update the targetted host, bundle details in vars section of plugin
+Assign bundle and schedule install. Update the targetted host(client_ip), bundle details in vars section of playbook
 ```
     ansible-playbook upgrade_stap_bundle.yml 
 ```
