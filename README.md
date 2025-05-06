@@ -69,6 +69,11 @@ Bulk test datasource connections for datasources listed in datasource file defin
 ```   
 
 ## Upgrade STAP bundle etc
+### Guardium API reference
+gim_assign_bundle_or_module_to_client_by_version  - https://www.ibm.com/docs/en/gdp/12.x?topic=reference-gim-assign-bundle-module-client-by-version
+
+gim_schedule_install - https://www.ibm.com/docs/en/gdp/12.x?topic=reference-gim-schedule-install
+
 Assign bundle and schedule install. Update the targetted host, bundle details in vars section of plugin
 ```
     ansible-playbook upgrade_stap_bundle.yml 
