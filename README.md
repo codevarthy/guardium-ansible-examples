@@ -13,12 +13,16 @@ Using Guardium API - https://www.ibm.com/docs/en/gdp/12.x?topic=commands-using-g
    ```
    example.yourdomain.com> grdapi register_oauth_client client_id=client1 grant_types="password"
    ID=0
-   {"client_id":"client1","client_secret":"b1f242a2-1e86-46d6-bf42-6298556c2eea","grant_types":"password"}
+   {"client_id":"client1","client_secret":"b1f242a2-xxxx-xxxx-xxxx-6298556c2eea","grant_types":"password"}
    ok
    example.yourdomain.com>
    ```
 2. You will also need a Guardium user and password to request an OAuth token.
 3. add all databases servers to inventory file in root folder - for example inventory.txt
+   ```
+  db2.mydemo.com ansible_host=10.100.1.7 ansible_ssh_user=root ansible_ssh_pass= guard_config_path=/usr/local/guardium/modules/STAP/current/guard-config-update
+  db1.mydemo.com ansible_host=10.100.1.6 ansible_ssh_user=root ansible_ssh_pass=   guard_config_path=/usr/local/guardium/modules/STAP/current/guard-config-update
+ ```
 
 
 ## STAP scripts 
@@ -27,6 +31,7 @@ list_staps - https://www.ibm.com/docs/en/gdp/12.x?topic=reference-list-staps
 
 start/stop stap or gim - https://www.ibm.com/docs/en/gdp/12.x?topic=lustop-linux-unix-start-stop-s-tap-gim-processes-various-os-typesversions
 
+restart_stap - https://www.ibm.com/docs/en/gdp/12.x?topic=reference-restart-stap
  List inactive staps
    
     ansible-playbook --tags always,print   list_inactive_staps.yml  -i inventory.txt
@@ -34,6 +39,15 @@ start/stop stap or gim - https://www.ibm.com/docs/en/gdp/12.x?topic=lustop-linux
    ```
    ansible-playbook --tags always,print,start_stopped_staps   list_inactive_staps.yml  -i inventory.txt
    ```
+ Restart STAP on db host using REST API to Guardium CM/Collector
+ ```
+ ansible-playbook restart_stap.yml --extra-vars "stap_host=raptor.gdemo.com"
+ ```
+ Check status of Guardium services running on database host (using SSH to DB host)
+```
+ansible-playbook check_staphost.yml -i inventory.txt
+```
+
 ## Datasources
 ### Guardium API reference - 
 create_datasource - https://www.ibm.com/docs/en/gdp/11.5.0?topic=reference-list-staps
