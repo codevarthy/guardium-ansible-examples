@@ -31,6 +31,7 @@ list_staps - https://www.ibm.com/docs/en/gdp/12.x?topic=reference-list-staps
 start/stop stap or gim - https://www.ibm.com/docs/en/gdp/12.x?topic=lustop-linux-unix-start-stop-s-tap-gim-processes-various-os-typesversions
 
 restart_stap - https://www.ibm.com/docs/en/gdp/12.x?topic=reference-restart-stap
+
  List inactive staps
    
     ansible-playbook --tags always,print   list_inactive_staps.yml  -i inventory.txt
