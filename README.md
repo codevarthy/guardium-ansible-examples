@@ -41,7 +41,7 @@ restart_stap - https://www.ibm.com/docs/en/gdp/12.x?topic=reference-restart-stap
    ```
  Restart STAP on db host using REST API to Guardium CM/Collector
  ```
- ansible-playbook restart_stap.yml --extra-vars "stap_host=raptor.gdemo.com"
+ ansible-playbook restart_stap.yml --extra-vars "stap_host=mydemo3.mydemo.com"
  ```
  Check status of Guardium services running on database host (using SSH to DB host)
 ```
