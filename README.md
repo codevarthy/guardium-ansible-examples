@@ -50,7 +50,7 @@ ansible-playbook check_staphost.yml --extra-vars "variable_host=mydb3.mydemo.com
 
 ## Datasources
 ### Guardium API reference - 
-create_datasource - https://www.ibm.com/docs/en/gdp/11.5.0?topic=reference-list-staps
+create_datasource - https://www.ibm.com/docs/en/gdp/12.x?topic=reference-create-datasource
 
 delete_datasource - https://www.ibm.com/docs/en/gdp/12.x?topic=reference-delete-datasource-by-name
 
