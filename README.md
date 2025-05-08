@@ -45,7 +45,7 @@ restart_stap - https://www.ibm.com/docs/en/gdp/12.x?topic=reference-restart-stap
  ```
  Check status of Guardium services running on database host (using SSH to DB host)
 ```
-ansible-playbook check_staphost.yml -i inventory.txt
+ansible-playbook check_staphost.yml --extra-vars "variable_host=mydb3.mydemo.com" -i inventory.txt
 ```
 
 ## Datasources
