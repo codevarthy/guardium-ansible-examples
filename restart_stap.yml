@@ -7,9 +7,6 @@
   connection: local
   tasks:
   - include: tasks/oauth_token.yml
-  - name: Print the response
-    debug:
-      msg: "Response: {{ access_token }}" 
   - name: Test Guardium datasource
     ansible.builtin.uri:
       url: https://guard:8443/restAPI/stap
