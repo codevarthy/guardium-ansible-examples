@@ -1,7 +1,7 @@
 ---
 # This playbook checks the status of Guardium services on host
 - name: Check Guardium services on database host
-  hosts: db1.mydemo.com
+  hosts: "{{ variable_host | default('db1.mydemo.com') }}"
   tasks:
   - name: Populate service facts
     ansible.builtin.service_facts:
