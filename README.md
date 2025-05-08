@@ -3,8 +3,10 @@ Provided "as is", without warranty. Use at your own risk.
 # guardium-ansible-examples
 Set of Guardium Ansible scripts
 
-
-
+## Download with 
+```
+git clone https://github.com/codevarthy/guardium-ansible-examples.git
+```
 ## Setup: 
 Using Guardium API - https://www.ibm.com/docs/en/gdp/12.x?topic=commands-using-guardium-rest-apis
 
